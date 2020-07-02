@@ -1,0 +1,181 @@
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		
+		<title>jQuery Project </title>
+		<link href="https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="jquery-ui.css">
+		<script src="jquery.min.js"></script>
+		<script src="jquery-ui.js"></script>
+		
+		<style>
+		
+			#header
+			{
+				width:100%;
+				background-color:#EDEDED;
+				padding:5px;
+				height:40px;	
+			}
+			
+			#logo
+			{	
+				float:left;
+				font-size:120%;
+				padding:3px 5px;
+				font-weight:bold;
+				margin-top:7px;
+			}
+			
+			#logoplus
+			{
+				width:250px;
+				margin:0 auto;
+			}
+			
+			#html
+			{
+				border-top-left-radius:5px;
+				border-bottom-left-radius:5px;
+			}
+		
+			#output
+			{
+				border-top-right-radius:5px;
+				border-bottom-right-radius:5px;
+				border-right:1px solid grey;
+			}
+			
+			.active
+			{
+				background-color:#EBF3FF;
+			}
+			
+			.togglebutton
+			{
+				float:left;
+				border:1px solid grey;
+				padding:6px;
+				border-right:none;
+				font-size:90%;	
+				margin-top:5px;
+			}
+			
+			.highlightedclass
+			{
+				background-color:grey;
+			}
+			
+			body
+			{	
+				padding:0px;
+				margin:0px;
+				font-family: 'Slabo 27px', serif;
+			}
+			
+			textarea
+			{
+				resize:none;
+				border-top:none;
+				border-color:grey;
+			}
+			
+			.panel
+			{
+				float:left;
+				width:50%;
+				border-left:none;
+				margin-top:2px;
+			}
+			
+			iframe
+			{
+				border:none;
+			}	
+			
+			.hidden
+			{
+				display:none;
+			}
+			
+		</style>
+		
+	</head>
+	
+	<body>
+ 
+		<div id="header">
+		
+			<div id="logo">
+			
+				CodePlayer
+			
+			</div>
+			
+			<div id="logoplus">
+			
+				<div class="togglebutton active" id="html">HTML</div>
+				<div class="togglebutton" id="css">CSS</div>
+				<div class="togglebutton" id="js">JavaScript</div>
+				<div class="togglebutton active" id="output">Output</div>
+			
+			</div>
+			
+		</div>	
+			
+			<div id="container">
+			
+				<textarea id="htmlpanel" class="panel" ><p id="paragraph">Hello World !</p></textarea>
+				<textarea id="csspanel" class="panel hidden" >p{color:green;}</textarea>
+				<textarea id="jspanel" class="panel hidden" >document.getElementById("paragraph").innerHTML="Hello Saksham !";</textarea>
+				<iframe id="outputpanel" class="panel"></iframe>
+			</div>
+		
+		
+ 
+		<script type="text/javascript">
+			
+			function update()
+			{
+				$("iframe").contents().find("html").html( "<html><head><style type='text/css'>"
+				+$("#csspanel").val() +"</style></head><body>" 
+				+$("#htmlpanel").val() + "</body></html>");
+				document.getElementById("outputpanel").contentWindow.eval($("#jspanel").val());
+			}
+			
+			$(".togglebutton").hover(function()
+			{
+				$(this).addClass("highlightedclass");
+			},function()
+			{
+				$(this).removeClass("highlightedclass");
+			}
+			);
+			
+			$(".togglebutton").click(function()
+			{
+				$(this).toggleClass("active");
+				$(this).removeClass("highlightedclass");
+				var panelid=$(this).attr("id")+"panel";
+				$("#"+panelid).toggleClass("hidden");
+				var nos = 4 - $(".hidden").length;
+				$(".panel").width(($(document).width() / nos) -15 );
+			}
+			)
+			
+			$(".panel").height($(document).height() - $("#header").height() -15);
+			$(".panel").width(($(document).width()/2)-15);
+			
+			update();
+			
+			$("textarea").on('change keyup paste', function()
+			{
+				update();
+			}
+			);
+			
+		</script>
+ 
+	</body>
+</html>
